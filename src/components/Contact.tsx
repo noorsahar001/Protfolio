@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Send, Mail } from "lucide-react";
+import { Send, Mail, CheckCircle } from "lucide-react";
 import { GithubIcon, LinkedinIcon} from "./SocialIcons";
 
 const socialLinks = [
@@ -20,15 +20,33 @@ export default function Contact() {
     message: "",
   });
   const [focused, setFocused] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Message sent! (Demo — wire up your preferred backend)");
-    setFormState({ name: "", email: "", message: "" });
+    setStatus("sending");
+
+    try {
+      const response = await fetch("https://formspree.io/f/xrenkbgl", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(formState),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setFormState({ name: "", email: "", message: "" });
+        setTimeout(() => setStatus("idle"), 4000);
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      setStatus("error");
+    }
   };
 
   return (
@@ -106,13 +124,41 @@ export default function Contact() {
 
               <motion.button
                 type="submit"
+                disabled={status === "sending"}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full py-3.5 rounded-xl bg-accent text-white font-medium flex items-center justify-center gap-2 hover:bg-accent-light transition-colors shadow-lg shadow-accent/25"
+                className="w-full py-3.5 rounded-xl bg-accent text-white font-medium flex items-center justify-center gap-2 hover:bg-accent-light transition-colors shadow-lg shadow-accent/25 disabled:opacity-60"
               >
-                <Send size={16} />
-                Send Message
+                {status === "sending" ? (
+                  "Sending..."
+                ) : (
+                  <>
+                    <Send size={16} />
+                    Send Message
+                  </>
+                )}
               </motion.button>
+
+              {status === "success" && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex items-center gap-2 text-sm text-green-400"
+                >
+                  <CheckCircle size={16} />
+                  Message sent successfully! I&apos;ll get back to you soon.
+                </motion.p>
+              )}
+
+              {status === "error" && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-sm text-red-400"
+                >
+                  Something went wrong. Please try again or email me directly.
+                </motion.p>
+              )}
             </form>
           </motion.div>
 
