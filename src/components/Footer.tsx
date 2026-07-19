@@ -4,9 +4,8 @@ import { Heart } from "lucide-react";
 import { GithubIcon, LinkedinIcon, TwitterIcon } from "./SocialIcons";
 
 const socialLinks = [
-  { icon: GithubIcon, href: "https://github.com" },
-  { icon: LinkedinIcon, href: "https://linkedin.com" },
-  { icon: TwitterIcon, href: "https://twitter.com" },
+  { icon: GithubIcon, href: "https://github.com/noorsahar001" },
+  { icon: LinkedinIcon, href: "https://www.linkedin.com/in/noor-sahar-4681b2369/" },
 ];
 
 export default function Footer() {
@@ -15,7 +14,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted flex items-center gap-1">
-            &copy; {new Date().getFullYear()} Your Name. Built with{" "}
+            &copy; NoorSahar. Built with{" "}
             <Heart size={14} className="text-red-500 fill-red-500" /> and Next.js.
           </p>
 
