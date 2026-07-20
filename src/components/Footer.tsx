@@ -4,8 +4,8 @@ import { Heart } from "lucide-react";
 import { GithubIcon, LinkedinIcon, TwitterIcon } from "./SocialIcons";
 
 const socialLinks = [
-  { icon: GithubIcon, href: "https://github.com/noorsahar001" },
-  { icon: LinkedinIcon, href: "https://www.linkedin.com/in/noor-sahar-4681b2369/" },
+    { icon: GithubIcon, href: "https://github.com/noorsahar001" },
+    { icon: LinkedinIcon, href: "https://www.linkedin.com/in/noor-sahar-4681b2369/" },
 ];
 
 export default function Footer() {
